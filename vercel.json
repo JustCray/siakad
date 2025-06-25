@@ -1,7 +1,19 @@
 {
     "$schema": "https://openapi.vercel.sh/vercel.json",
-    "routes": [
-        { src: "/.*", dest: "/auth/login.php" },
-        { src: "/assets/css/.*", "dest": "/assets/css/style.css" }
+    "version": 2,
+    "rewrites": [
+        {
+            "source": "/auth/login.php",
+            "destination": "/auth/login.php"
+        }
     ],
+    "functions": {
+        "api/**/*.php": {
+            "runtime": "vercel-php@0.6.0"
+        },
+        "auth/login.php": {
+            "runtime": "vercel-php@0.6.0"
+        }
+    }
+
 }
