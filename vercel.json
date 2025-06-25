@@ -1,4 +1,5 @@
 {
+    "$schema": "https://openapi.vercel.sh/vercel.json",
     "routes": [
         { src: "/(.*)", dest: "/auth/login.php" },
         { src: "/assets/css/(.*)", "dest": "/assets/css/style.css" }
