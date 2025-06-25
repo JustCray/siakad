@@ -6,11 +6,5 @@
             "source": "/auth/login.php",
             "destination": "/auth/login.php"
         }
-    ],
-    "functions": {
-        "auth/login.php": {
-            "runtime": "vercel-php@0.6.0"
-        }
-    }
-
+    ]
 }
