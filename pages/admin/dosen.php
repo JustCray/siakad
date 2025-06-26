@@ -65,7 +65,7 @@ if (isset($_GET['edit'])) {
     <meta charset="UTF-8">
     <title>Data Dosen</title>
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
-    <link rel="stylesheet" href="../../assets/css/dosen.css">
+    <link rel="stylesheet" href="../../assets/css/dosens.css">
 </head>
 <body>
 <header class="sticky-header">
@@ -132,7 +132,7 @@ if (isset($_GET['edit'])) {
                 <label>Nama:</label>
                 <input type="text" name="nama" value="<?= htmlspecialchars($nama) ?>" required>
                 <label>Email:</label>
-                <input type="email" name="email" value="<?= htmlspecialchars($email) ?>" required>
+                <input type="text" name="email" value="<?= htmlspecialchars($email) ?>" required>
                 <label>No. HP:</label>
                 <input type="text" name="no_hp" value="<?= htmlspecialchars($no_hp) ?>" required>
                 <label>Bidang:</label>
