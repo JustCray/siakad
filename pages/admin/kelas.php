@@ -8,25 +8,25 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
     exit;
 }
 
-$id_kelas = $kode_mk = $nip = $sks = "";
+$id_kelas = $kode_mk = $nip = $nama_kelas = "";
 
 if (isset($_POST['simpan'])) {
     $id_kelas = trim($_POST['id_kelas']);
     $kode_mk = trim($_POST['kode_mk']);
     $nip = trim($_POST['nip']);
-    $sks = trim($_POST['sks']);
+    $nama_kelas = trim($_POST['nama_kelas']);
 
-    if ($id_kelas === "" || $kode_mk === "" || $nip === "" || $sks === "") {
+    if ($id_kelas === "" || $kode_mk === "" || $nip === "" || $nama_kelas === "") {
         die("Semua field harus diisi.");
     }
 
     $cek = mysqli_query($conn, "SELECT * FROM kelas WHERE id_kelas = '$id_kelas'");
     if (mysqli_num_rows($cek) > 0) {
-        $stmt = mysqli_prepare($conn, "UPDATE kelas SET kode_mk=?, nip=?, sks=? WHERE id_kelas=?");
-        mysqli_stmt_bind_param($stmt, "sssi", $kode_mk, $nip, $sks, $id_kelas);
+        $stmt = mysqli_prepare($conn, "UPDATE kelas SET kode_mk=?, nip=?, nama_kelas=? WHERE id_kelas=?");
+        mysqli_stmt_bind_param($stmt, "sssi", $kode_mk, $nip, $nama_kelas, $id_kelas);
     } else {
-        $stmt = mysqli_prepare($conn, "INSERT INTO kelas (id_kelas, kode_mk, nip, sks) VALUES (?, ?, ?, ?)");
-        mysqli_stmt_bind_param($stmt, "isss", $id_kelas, $kode_mk, $nip, $sks);
+        $stmt = mysqli_prepare($conn, "INSERT INTO kelas (id_kelas, kode_mk, nip, nama_kelas) VALUES (?, ?, ?, ?)");
+        mysqli_stmt_bind_param($stmt, "isss", $id_kelas, $kode_mk, $nip, $nama_kelas);
     }
 
     mysqli_stmt_execute($stmt);
@@ -53,7 +53,7 @@ if (isset($_GET['edit'])) {
         $id_kelas = $row['id_kelas'];
         $kode_mk = $row['kode_mk'];
         $nip = $row['nip'];
-        $sks = $row['sks'];
+        $nama_kelas = $row['nama_kelas'];
     }
 }
 ?>
@@ -74,9 +74,13 @@ if (isset($_GET['edit'])) {
 <div class="main-wrapper">
     <aside class="sidebar sticky-sidebar">
         <ul class="sidebar-menu">
-            <li class="dashboard"><a href="dashboard.php">Dashboard</a></li>
+            <div class="menu-item">
+                <li class="dashboard"><a href="dashboard.php">Dashboard</a></li>
+            </div>
             <li class="dropdown" onclick="toggleDropdown(this)">
-                <span>Data Master</span> <span class="arrow">&#9654;</span>
+                <div class="menu-item">
+                    <span>Data Master</span> <span class="arrow">&#9654;</span>
+                </div>
                 <ul class="submenu">
                     <li><a href="mahasiswa.php">Data Mahasiswa</a></li>
                     <li><a href="dosen.php">Data Dosen</a></li>
@@ -85,8 +89,10 @@ if (isset($_GET['edit'])) {
                 </ul>
             </li>
             <li class="dropdown" onclick="toggleDropdown(this)">
-                <span>Manajemen Akademik</span>
-                <span class="arrow">&#9654;</span>
+                <div class="menu-item">
+                    <span>Manajemen Akademik</span>
+                    <span class="arrow">&#9654;</span>
+                </div>
                 <ul class="submenu">
                     <li><a href="krs.php">Verifikasi KRS Mahasiswa</a></li>
                     <li><a href="jadwal.php">Monitoring Jadwal Kuliah</a></li>
@@ -95,7 +101,9 @@ if (isset($_GET['edit'])) {
             </li>
 
             <li class="dropdown" onclick="toggleDropdown(this)">
-                <span>Laporan & Statistik</span> <span class="arrow">&#9654;</span>
+                <div class="menu-item">
+                    <span>Laporan & Statistik</span> <span class="arrow">&#9654;</span>
+                </div>
                 <ul class="submenu">
                     <li><a href="jumlah.php">Jumlah Mahasiswa per Prodi</a></li>
                     <li><a href="sks.php">Statistik SKS</a></li>
@@ -103,7 +111,9 @@ if (isset($_GET['edit'])) {
             </li>
 
             <li class="dropdown" onclick="toggleDropdown(this)">
-                <span>Pengaturan Sistem</span> <span class="arrow">&#9654;</span>
+                <div class="menu-item">
+                    <span>Pengaturan Sistem</span> <span class="arrow">&#9654;</span>
+                </div>
                 <ul class="submenu">
                     <li><a href="tahun.php">Ganti Tahun Ajaran</a></li>
                     <li><a href="reset.php">Reset Password</a></li>
@@ -125,8 +135,8 @@ if (isset($_GET['edit'])) {
                 <label>NIP Dosen:</label>
                 <input type="text" name="nip" value="<?= htmlspecialchars($nip) ?>" required>
 
-                <label>SKS:</label>
-                <input type="number" name="sks" value="<?= htmlspecialchars($sks) ?>" required>
+                <label>Nama Kelas:</label>
+                <input type="number" name="nama_kelas" value="<?= htmlspecialchars($nama_kelas) ?>" required>
 
                 <button type="submit" name="simpan">Simpan</button>
             </form>
@@ -137,7 +147,7 @@ if (isset($_GET['edit'])) {
                         <th>ID Kelas</th>
                         <th>Kode MK</th>
                         <th>NIP</th>
-                        <th>SKS</th>
+                        <th>Nama Kelas</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -149,7 +159,7 @@ if (isset($_GET['edit'])) {
                             <td>{$row['id_kelas']}</td>
                             <td>{$row['kode_mk']}</td>
                             <td>{$row['nip']}</td>
-                            <td>{$row['sks']}</td>
+                            <td>{$row['nama_kelas']}</td>
                             <td>
                                 <a href='?edit={$row['id_kelas']}' class='edit-btn'>Edit</a>
                                 <a href='?hapus={$row['id_kelas']}' onclick='return confirm(\"Hapus data ini?\")' class='delete-btn'>Hapus</a>
